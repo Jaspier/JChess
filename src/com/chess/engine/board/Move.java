@@ -36,7 +36,6 @@ public abstract class Move {
             final Builder builder = new Builder();
 
             for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
-                // TODO: hashcode an 'equals' for pieces
                 if (!this.movedPiece.equals(piece)) {
                     builder.setPiece(piece);
                 }
