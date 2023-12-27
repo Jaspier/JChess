@@ -53,6 +53,16 @@ public class Table {
         });
         fileMenu.add(openPGN);
 
+        final JMenuItem exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        fileMenu.add(exitMenuItem);
+
         return fileMenu;
     }
 
