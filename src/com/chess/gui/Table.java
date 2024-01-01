@@ -19,6 +19,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static javax.swing.SwingUtilities.isLeftMouseButton;
@@ -231,6 +233,7 @@ public class Table {
         public void drawTile(final Board board) {
             assignTileColour();
             assignTilePieceIcon(board);
+            highlightLegals(board);
             validate();
             repaint();
         }
@@ -239,13 +242,34 @@ public class Table {
             this.removeAll();
             if (board.getTile(this.tileId).isTileOccupied()) {
                 try {
-                    final BufferedImage image = ImageIO.read(new File(DEFAULT_PIECE_IMAGES_PATH + board.getTile(this.tileId).getPiece().getPieceAlliance().toString().substring(0, 1) +
+                    final BufferedImage image = ImageIO.read(new File(DEFAULT_PIECE_IMAGES_PATH + board.getTile(this.tileId).getPiece().getPieceAlliance().toString().charAt(0) +
                             board.getTile(this.tileId).getPiece().toString() + ".gif"));
                     add(new JLabel(new ImageIcon(image)));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
+        }
+
+        private void highlightLegals(final Board board) {
+            if (true) { // TODO: add preference option
+                for (final Move move : pieceLegalMoves(board)) {
+                    if (move.getDestinationCoordinate() == this.tileId) {
+                        try {
+                            add (new JLabel(new ImageIcon(ImageIO.read(new File("assets/misc/highlight.png")))));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        }
+
+        private Collection<Move> pieceLegalMoves(final Board board) {
+            if (humanMovedPiece != null && humanMovedPiece.getPieceAlliance() == board.currentPlayer().getAlliance()) {
+                return humanMovedPiece.calculateLegalMoves(board);
+            }
+            return Collections.emptyList();
         }
 
         private void assignTileColour() {
