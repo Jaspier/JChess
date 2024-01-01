@@ -1,7 +1,6 @@
 package com.chess.gui;
 
 import com.chess.engine.board.BoardUtils;
-import com.chess.engine.board.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -93,15 +92,15 @@ public class Table {
         }
 
         private void assignTileColour() {
-            if (BoardUtils.FIRST_ROW[this.tileId] ||
-                BoardUtils.THIRD_ROW[this.tileId] ||
-                    BoardUtils.FIFTH_ROW[this.tileId] ||
-                    BoardUtils.SEVENTH_ROW[this.tileId]) {
+            if (BoardUtils.EIGHTH_RANK[this.tileId] ||
+                BoardUtils.SIXTH_RANK[this.tileId] ||
+                    BoardUtils.FOURTH_RANK[this.tileId] ||
+                    BoardUtils.SECOND_RANK[this.tileId]) {
                 setBackground(this.tileId % 2 == 0 ? lightTileColour : darkTileColour);
-            } else if (BoardUtils.SECOND_ROW[this.tileId] ||
-                        BoardUtils.FOURTH_ROW[this.tileId] ||
-                        BoardUtils.SIXTH_ROW[this.tileId] ||
-                        BoardUtils.EIGHTH_ROW[this.tileId]) {
+            } else if (BoardUtils.SEVENTH_RANK[this.tileId] ||
+                        BoardUtils.FIFTH_RANK[this.tileId] ||
+                        BoardUtils.THIRD_RANK[this.tileId] ||
+                        BoardUtils.FIRST_RANK[this.tileId]) {
                 setBackground(this.tileId % 2 != 0 ? lightTileColour : darkTileColour);
             }
 
