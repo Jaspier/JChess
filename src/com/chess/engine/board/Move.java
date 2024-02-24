@@ -287,14 +287,19 @@ public abstract class Move {
     }
 
     public static final class NullMove extends Move {
-
+        // Both -1 and 65 are invalid coordinate positions
         public NullMove() {
-            super(null, -1);
+            super(null, 65);
         }
 
         @Override
         public Board execute() {
             throw new RuntimeException("Cannot execute Null Move!");
+        }
+
+        @Override
+        public int getCurrentCoordinate() {
+            return -1;
         }
 
     }
