@@ -108,10 +108,10 @@ public abstract class Move {
             return this == other || other instanceof MajorMove && super.equals(other);
         }
 
-//        @Override
-//        public String toString() {
-//            return movedPiece.getPieceType().toString() + BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
-//        }
+        @Override
+        public String toString() {
+            return movedPiece.getPieceType().toString() + BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+        }
     }
 
     public static class AttackMove extends Move {
@@ -284,7 +284,7 @@ public abstract class Move {
     public static final class NullMove extends Move {
 
         public NullMove() {
-            super(null, null, -1);
+            super(null, -1);
         }
 
         @Override
