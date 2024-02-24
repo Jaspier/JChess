@@ -204,6 +204,11 @@ public abstract class Move {
             return builder.build();
         }
 
+        @Override
+        public String toString() {
+           return BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+        }
+
     }
 
     static abstract class CastleMove extends Move {

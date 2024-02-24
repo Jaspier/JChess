@@ -18,7 +18,7 @@ import java.util.List;
 public class TakenPiecesPanel extends JPanel {
     private final JPanel northPanel;
     private final JPanel southPanel;
-    private static final Color PANEL_COLOR = Color.decode("0xFDFE6");
+    private static final Color PANEL_COLOR = Color.decode("0xFDF5E6");
     private static final Dimension TAKEN_PIECES_DIMENSION = new Dimension(40, 80);
     private static final EtchedBorder PANEL_BORDER = new EtchedBorder(EtchedBorder.RAISED);
 
