@@ -1,4 +1,4 @@
-package com.tests.chess.engine.board;
+package tests;
 
 import com.chess.engine.Alliance;
 import com.chess.engine.board.*;
