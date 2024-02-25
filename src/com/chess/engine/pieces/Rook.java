@@ -70,11 +70,11 @@ public class Rook extends Piece {
         return PieceType.ROOK.toString();
     }
 
-    private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == -1);
+    private static boolean isFirstColumnExclusion(final int position, final int offset) {
+        return BoardUtils.INSTANCE.FIRST_COLUMN.get(position) && (offset == -1);
     }
 
-    private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
-        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == 1);
+    private static boolean isEighthColumnExclusion(final int position, final int offset) {
+        return BoardUtils.INSTANCE.EIGHTH_COLUMN.get(position) && (offset == 1);
     }
 }

@@ -101,6 +101,16 @@ public abstract class Move {
         return builder.build();
     }
 
+    String disambiguationFile() {
+        for(final Move move : this.board.currentPlayer().getLegalMoves()) {
+            if(move.getDestinationCoordinate() == this.destinationCoordinate && !this.equals(move) &&
+                    this.movedPiece.getPieceType().equals(move.getMovedPiece().getPieceType())) {
+                return BoardUtils.INSTANCE.getPositionAtCoordinate(this.movedPiece.getPiecePosition()).substring(0, 1);
+            }
+        }
+        return "";
+    }
+
     public static class MajorAttackMove extends AttackMove {
         public MajorAttackMove(final Board board, final Piece pieceMoved, final int destinationCoordinate, final Piece pieceAttacked) {
             super(board, pieceMoved, destinationCoordinate, pieceAttacked);
@@ -113,7 +123,8 @@ public abstract class Move {
 
         @Override
         public String toString() {
-            return movedPiece.getPieceType() + BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+            return movedPiece.getPieceType() + disambiguationFile() + "x" +
+                    BoardUtils.INSTANCE.getPositionAtCoordinate(this.destinationCoordinate);
         }
     }
 
@@ -130,7 +141,8 @@ public abstract class Move {
 
         @Override
         public String toString() {
-            return movedPiece.getPieceType().toString() + BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+            return movedPiece.getPieceType().toString() + disambiguationFile() +
+                    BoardUtils.INSTANCE.getPositionAtCoordinate(this.destinationCoordinate);
         }
     }
 
@@ -183,7 +195,7 @@ public abstract class Move {
 
         @Override
         public String toString() {
-            return BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+            return BoardUtils.INSTANCE.getPositionAtCoordinate(this.destinationCoordinate);
         }
     }
 
@@ -200,7 +212,8 @@ public abstract class Move {
 
         @Override
         public String toString() {
-            return BoardUtils.getPositionAtCoordinate(this.movedPiece.getPiecePosition()).charAt(0) + "x" + BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+            return BoardUtils.INSTANCE.getPositionAtCoordinate(this.movedPiece.getPiecePosition()).charAt(0) + "x" +
+                    BoardUtils.INSTANCE.getPositionAtCoordinate(this.destinationCoordinate);
         }
 
     }
@@ -314,7 +327,7 @@ public abstract class Move {
 
         @Override
         public String toString() {
-           return BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+            return BoardUtils.INSTANCE.getPositionAtCoordinate(this.destinationCoordinate);
         }
 
     }
@@ -447,6 +460,10 @@ public abstract class Move {
 
         private MoveFactory() {
             throw new RuntimeException("Not Instantiable!");
+        }
+
+        public static Move getNullMove() {
+            return new NullMove();
         }
 
         public static Move createMove(final Board board, final int currentCoordinate, final int destinationCoordinate) {

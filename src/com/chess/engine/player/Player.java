@@ -3,6 +3,7 @@ package com.chess.engine.player;
 import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.MoveTransition;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Piece;
 import com.google.common.collect.ImmutableList;
@@ -11,7 +12,6 @@ import com.google.common.collect.Iterables;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public abstract class Player {
 
@@ -81,14 +81,13 @@ public abstract class Player {
         return false;
     }
 
-    // TODO: Implement method below...
     public boolean isCastled() {
         return false;
     }
 
     public MoveTransition makeMove(final Move move) {
         if (!isMoveLegal(move)) {
-            return new MoveTransition(this.board, move, MoveStatus.ILLEGAL_MOVE);
+            return new MoveTransition(this.board,this.board, move, MoveStatus.ILLEGAL_MOVE);
         }
 
         // This executes the move, creating a new board and switches to the next player.
@@ -99,10 +98,10 @@ public abstract class Player {
                 transitionBoard.currentPlayer().getLegalMoves());
 
         if (!kingAttacks.isEmpty()) {
-            return new MoveTransition(this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
+            return new MoveTransition(this.board, this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
         }
 
-        return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
+        return new MoveTransition(this.board, transitionBoard, move, MoveStatus.DONE);
     }
 
     public abstract Collection<Piece> getActivePieces();

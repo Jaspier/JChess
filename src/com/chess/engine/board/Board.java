@@ -1,6 +1,7 @@
 package com.chess.engine.board;
 
 import com.chess.engine.Alliance;
+import com.chess.engine.board.Move.MoveFactory;
 import com.chess.engine.pieces.*;
 import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
@@ -9,9 +10,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class Board {
-
+public final class Board {
+    private final Map<Integer, Piece> boardConfig;
     private final List<Tile> gameBoard;
     private final Collection<Piece> whitePieces;
     private final Collection<Piece> blackPieces;
@@ -19,8 +22,10 @@ public class Board {
     private final BlackPlayer blackPlayer;
     private final Player currentPlayer;
     private final Pawn enPassantPawn;
+    private final Move transitionMove;
 
     private Board(final Builder builder) {
+        this.boardConfig = Collections.unmodifiableMap(builder.boardConfig);
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = calculateActivePieces(this.gameBoard, Alliance.WHITE);
         this.blackPieces = calculateActivePieces(this.gameBoard, Alliance.BLACK);
@@ -32,19 +37,28 @@ public class Board {
         this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
         this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
         this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer, this.blackPlayer);
+        this.transitionMove = builder.transitionMove != null ? builder.transitionMove : MoveFactory.getNullMove();
     }
 
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < BoardUtils.NUM_TILES; i++) {
-            final String tileText = this.gameBoard.get(i).toString();
+            final String tileText = prettyPrint(this.boardConfig.get(i));
             builder.append(String.format("%3s", tileText));
             if ((i + 1) % BoardUtils.NUM_TILES_PER_ROW == 0) {
                 builder.append("\n");
             }
         }
         return builder.toString();
+    }
+
+    private static String prettyPrint(final Piece piece) {
+        if(piece != null) {
+            return piece.getPieceAlliance().isBlack() ?
+                    piece.toString().toLowerCase() : piece.toString();
+        }
+        return "-";
     }
 
     public Player whitePlayer() {
@@ -59,8 +73,16 @@ public class Board {
         return this.currentPlayer;
     }
 
+    public Piece getPiece(final int coordinate) {
+        return this.boardConfig.get(coordinate);
+    }
+
     public Pawn getEnPassantPawn() {
         return this.enPassantPawn;
+    }
+
+    public Move getTransitionMove() {
+        return this.transitionMove;
     }
 
     public Collection<Piece> getBlackPieces() {
@@ -69,6 +91,11 @@ public class Board {
 
     public Collection<Piece> getWhitePieces() {
         return this.whitePieces;
+    }
+
+    public Collection<Piece> getAllPieces() {
+        return Stream.concat(this.whitePieces.stream(),
+                this.blackPieces.stream()).collect(Collectors.toList());
     }
 
     private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
@@ -159,6 +186,7 @@ public class Board {
         Map<Integer, Piece> boardConfig;
         Alliance nextMoveMaker;
         Pawn enPassantPawn;
+        Move transitionMove;
 
         public Builder() {
             this.boardConfig = new HashMap<>();
@@ -169,17 +197,16 @@ public class Board {
             return this;
         }
 
-        public Builder setMoveMaker(final Alliance nextMoveMaker) {
+        public void setMoveMaker(final Alliance nextMoveMaker) {
             this.nextMoveMaker = nextMoveMaker;
-            return this;
-        }
-
-        public Board build() {
-            return new Board(this);
         }
 
         public void setEnPassantPawn(Pawn enPassantPawn) {
             this.enPassantPawn = enPassantPawn;
+        }
+
+        public Board build() {
+            return new Board(this);
         }
     }
 

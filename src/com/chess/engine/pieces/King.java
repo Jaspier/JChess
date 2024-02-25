@@ -67,11 +67,15 @@ public class King extends Piece {
         return PieceType.KING.toString();
     }
 
-    private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == -9 || candidateOffset == -1 || candidateOffset == 7);
+    private static boolean isFirstColumnExclusion(final int currentCandidate, final int candidateDestinationCoordinate) {
+        return BoardUtils.INSTANCE.FIRST_COLUMN.get(currentCandidate)
+                && ((candidateDestinationCoordinate == -9) || (candidateDestinationCoordinate == -1) ||
+                (candidateDestinationCoordinate == 7));
     }
 
-    private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
-        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 || candidateOffset == 1 || candidateOffset == 9);
+    private static boolean isEighthColumnExclusion(final int currentCandidate, final int candidateDestinationCoordinate) {
+        return BoardUtils.INSTANCE.EIGHTH_COLUMN.get(currentCandidate)
+                && ((candidateDestinationCoordinate == -7) || (candidateDestinationCoordinate == 1) ||
+                (candidateDestinationCoordinate == 9));
     }
 }

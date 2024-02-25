@@ -70,11 +70,13 @@ public class Queen extends Piece {
         return PieceType.QUEEN.toString();
     }
 
-    private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == -1 || candidateOffset == -9 || candidateOffset == 7);
+    private static boolean isFirstColumnExclusion(final int position, final int offset) {
+        return BoardUtils.INSTANCE.FIRST_COLUMN.get(position) && ((offset == -9)
+                || (offset == -1) || (offset == 7));
     }
 
-    private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
-        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 || candidateOffset == 1 || candidateOffset == 9);
+    private static boolean isEighthColumnExclusion(final int position, final int offset) {
+        return BoardUtils.INSTANCE.EIGHTH_COLUMN.get(position) && ((offset == -7)
+                || (offset == 1) || (offset == 9));
     }
 }
