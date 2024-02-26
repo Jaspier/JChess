@@ -92,7 +92,7 @@ public abstract class Player {
     }
 
     public boolean isCastled() {
-        return false;
+        return this.playerKing.isCastled();
     }
 
     public MoveTransition makeMove(final Move move) {
