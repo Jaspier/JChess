@@ -22,10 +22,10 @@ public class TestPieces {
     public void testMiddleQueenOnEmptyBoard() {
         final Builder builder = new Builder();
         // Black Layout
-        builder.setPiece(new King(Alliance.BLACK, 4));
+        builder.setPiece(new King(Alliance.BLACK, 4, false, false));
         // White Layout
         builder.setPiece(new Queen(Alliance.WHITE, 36));
-        builder.setPiece(new King(Alliance.WHITE, 60));
+        builder.setPiece(new King(Alliance.WHITE, 60, false, false));
         // Set the current player
         builder.setMoveMaker(Alliance.WHITE);
         final Board board = builder.build();
@@ -68,10 +68,10 @@ public class TestPieces {
     @Test
     public void testKnightInCorners() {
         final Board.Builder boardBuilder = new Board.Builder();
-        boardBuilder.setPiece(new King(Alliance.BLACK, 4));
+        boardBuilder.setPiece(new King(Alliance.BLACK, 4, false, false));
         boardBuilder.setPiece(new Knight(Alliance.BLACK, 0));
         boardBuilder.setPiece(new Knight(Alliance.WHITE, 56));
-        boardBuilder.setPiece(new King(Alliance.WHITE, 60));
+        boardBuilder.setPiece(new King(Alliance.WHITE, 60, false, false));
         boardBuilder.setMoveMaker(Alliance.WHITE);
         final Board board = boardBuilder.build();
         final Collection<Move> whiteLegals = board.whitePlayer().getLegalMoves();
@@ -96,10 +96,10 @@ public class TestPieces {
     public void testMiddleBishopOnEmptyBoard() {
         final Board.Builder builder = new Board.Builder();
         // Black Layout
-        builder.setPiece(new King(Alliance.BLACK, 4));
+        builder.setPiece(new King(Alliance.BLACK, 4, false, false));
         // White Layout
         builder.setPiece(new Bishop(Alliance.WHITE, 35));
-        builder.setPiece(new King(Alliance.WHITE, 60));
+        builder.setPiece(new King(Alliance.WHITE, 60, false, false));
         // Set the current player
         builder.setMoveMaker(Alliance.WHITE);
         //build the board
@@ -126,10 +126,10 @@ public class TestPieces {
     public void testTopLeftBishopOnEmptyBoard() {
         Board.Builder builder = new Board.Builder();
         // Black Layout
-        builder.setPiece(new King(Alliance.BLACK, 4));
+        builder.setPiece(new King(Alliance.BLACK, 4, false, false));
         // White Layout
         builder.setPiece(new Bishop(Alliance.WHITE, 0));
-        builder.setPiece(new King(Alliance.WHITE, 60));
+        builder.setPiece(new King(Alliance.WHITE, 60, false, false));
         // Set the current player
         builder.setMoveMaker(Alliance.WHITE);
         //build the board
@@ -160,10 +160,10 @@ public class TestPieces {
     public void testTopRightBishopOnEmptyBoard() {
         Board.Builder builder = new Board.Builder();
         // Black Layout
-        builder.setPiece(new King(Alliance.BLACK, 4));
+        builder.setPiece(new King(Alliance.BLACK, 4, false, false));
         // White Layout
         builder.setPiece(new Bishop(Alliance.WHITE, 7));
-        builder.setPiece(new King(Alliance.WHITE, 60));
+        builder.setPiece(new King(Alliance.WHITE, 60, false, false));
         // Set the current player
         builder.setMoveMaker(Alliance.WHITE);
         //build the board
@@ -192,10 +192,10 @@ public class TestPieces {
     public void testBottomLeftBishopOnEmptyBoard() {
         Board.Builder builder = new Board.Builder();
         // Black Layout
-        builder.setPiece(new King(Alliance.BLACK, 4));
+        builder.setPiece(new King(Alliance.BLACK, 4, false, false));
         // White Layout
         builder.setPiece(new Bishop(Alliance.WHITE, 56));
-        builder.setPiece(new King(Alliance.WHITE, 60));
+        builder.setPiece(new King(Alliance.WHITE, 60, false, false));
         // Set the current player
         builder.setMoveMaker(Alliance.WHITE);
         //build the board
@@ -224,10 +224,10 @@ public class TestPieces {
     public void testBottomRightBishopOnEmptyBoard() {
         Board.Builder builder = new Board.Builder();
         // Black Layout
-        builder.setPiece(new King(Alliance.BLACK, 4));
+        builder.setPiece(new King(Alliance.BLACK, 4, false, false));
         // White Layout
         builder.setPiece(new Bishop(Alliance.WHITE, 63));
-        builder.setPiece(new King(Alliance.WHITE, 60));
+        builder.setPiece(new King(Alliance.WHITE, 60, false, false));
         // Set the current player
         builder.setMoveMaker(Alliance.WHITE);
         //build the board
@@ -256,10 +256,10 @@ public class TestPieces {
     public void testMiddleRookOnEmptyBoard() {
         final Board.Builder builder = new Board.Builder();
         // Black Layout
-        builder.setPiece(new King(Alliance.BLACK, 4));
+        builder.setPiece(new King(Alliance.BLACK, 4, false, false));
         // White Layout
         builder.setPiece(new Rook(Alliance.WHITE, 36));
-        builder.setPiece(new King(Alliance.WHITE, 60));
+        builder.setPiece(new King(Alliance.WHITE, 60, false, false));
         // Set the current player
         builder.setMoveMaker(Alliance.WHITE);
         final Board board = builder.build();
@@ -300,10 +300,10 @@ public class TestPieces {
         final Board.Builder builder = new Board.Builder();
         // Black Layout
         builder.setPiece(new Rook(Alliance.BLACK, 3));
-        builder.setPiece(new King(Alliance.BLACK, 22));
+        builder.setPiece(new King(Alliance.BLACK, 22, false, false));
         // White Layout
         builder.setPiece(new Pawn(Alliance.WHITE, 15));
-        builder.setPiece(new King(Alliance.WHITE, 52));
+        builder.setPiece(new King(Alliance.WHITE, 52, false, false));
         // Set the current player
         builder.setMoveMaker(Alliance.WHITE);
         final Board board = builder.build();
@@ -323,11 +323,11 @@ public class TestPieces {
     public void testSimpleWhiteEnPassant() {
         final Board.Builder builder = new Board.Builder();
         // Black Layout
-        builder.setPiece(new King(Alliance.BLACK, 4));
+        builder.setPiece(new King(Alliance.BLACK, 4, false, false));
         builder.setPiece(new Pawn(Alliance.BLACK, 11));
         // White Layout
         builder.setPiece(new Pawn(Alliance.WHITE, 52));
-        builder.setPiece(new King(Alliance.WHITE, 60));
+        builder.setPiece(new King(Alliance.WHITE, 60, false, false));
         // Set the current player
         builder.setMoveMaker(Alliance.WHITE);
         final Board board = builder.build();
@@ -353,11 +353,11 @@ public class TestPieces {
     public void testSimpleBlackEnPassant() {
         final Board.Builder builder = new Board.Builder();
         // Black Layout
-        builder.setPiece(new King(Alliance.BLACK, 4));
+        builder.setPiece(new King(Alliance.BLACK, 4, false, false));
         builder.setPiece(new Pawn(Alliance.BLACK, 11));
         // White Layout
         builder.setPiece(new Pawn(Alliance.WHITE, 52));
-        builder.setPiece(new King(Alliance.WHITE, 60));
+        builder.setPiece(new King(Alliance.WHITE, 60, false, false));
         // Set the current player
         builder.setMoveMaker(Alliance.WHITE);
         final Board board = builder.build();
