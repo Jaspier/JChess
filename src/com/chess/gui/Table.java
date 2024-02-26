@@ -8,6 +8,8 @@ import com.chess.engine.pieces.Piece;
 import com.chess.engine.board.MoveTransition;
 import com.chess.engine.player.ai.MiniMax;
 import com.chess.engine.player.ai.MoveStrategy;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import javax.imageio.ImageIO;
@@ -436,6 +438,9 @@ public class Table extends Observable {
         private void highlightLegals(final Board board) {
             if (highlightLegalMoves) {
                 for (final Move move : pieceLegalMoves(board)) {
+                    if ( !sourceTile.getPiece().getPieceType().isKing() && move.isCastlingMove()) {
+                        continue;
+                    }
                     if (move.getDestinationCoordinate() == this.tileId) {
                         try {
                             add (new JLabel(new ImageIcon(ImageIO.read(new File("assets/misc/highlight.png")))));
@@ -449,7 +454,9 @@ public class Table extends Observable {
 
         private Collection<Move> pieceLegalMoves(final Board board) {
             if (humanMovedPiece != null && humanMovedPiece.getPieceAlliance() == board.currentPlayer().getAlliance()) {
-                return humanMovedPiece.calculateLegalMoves(board);
+                return ImmutableList.copyOf(Iterables.concat ( humanMovedPiece.calculateLegalMoves(board),
+                        chessBoard.currentPlayer().calculateKingCastles(chessBoard.currentPlayer().getLegalMoves(),
+                                chessBoard.currentPlayer().getOpponent().getLegalMoves()) ));
             }
             return Collections.emptyList();
         }
