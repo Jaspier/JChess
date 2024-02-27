@@ -8,16 +8,24 @@ public class MiniMax implements MoveStrategy {
 
     private final BoardEvaluator boardEvaluator;
     private final int searchDepth;
+    private long boardsEvaluated;
 
     public MiniMax(final int searchDepth) {
         this.boardEvaluator = new StandardBoardEvaluator();
         this.searchDepth = searchDepth;
+        this.boardsEvaluated = 0;
     }
 
     @Override
     public String toString() {
         return "MiniMax";
     }
+
+    @Override
+    public long getNumBoardsEvaluated() {
+        return this.boardsEvaluated;
+    }
+
 
     @Override
     public Move execute(Board board) {
@@ -48,12 +56,14 @@ public class MiniMax implements MoveStrategy {
         }
 
         final long executionTime = System.currentTimeMillis() - startTime;
+        System.out.println(this + " " + "took" + " " + executionTime + "ms" + " " + "to make move...");
 
         return bestMove;
     }
 
     public int min(final Board board, int depth) {
         if (depth == 0 || isEndGameScenario(board)) {
+            this.boardsEvaluated++;
             return this.boardEvaluator.evaluate(board, depth);
         }
 
@@ -73,6 +83,7 @@ public class MiniMax implements MoveStrategy {
 
     public int max(final Board board, int depth) {
         if (depth == 0 || isEndGameScenario(board)) {
+            this.boardsEvaluated++;
             return this.boardEvaluator.evaluate(board, depth);
         }
 
