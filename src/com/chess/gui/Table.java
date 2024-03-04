@@ -6,6 +6,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.board.MoveTransition;
+import com.chess.engine.player.ai.AlphaBeta;
 import com.chess.engine.player.ai.MiniMax;
 import com.chess.engine.player.ai.MoveStrategy;
 import com.google.common.collect.ImmutableList;
@@ -222,8 +223,8 @@ public class Table extends Observable {
 
         @Override
         public Move doInBackground() throws Exception {
-            final MoveStrategy miniMax = new MiniMax(4);
-            final Move bestMove = miniMax.execute(Table.get().getGameBoard());
+            final MoveStrategy alphaBeta = new AlphaBeta(4);
+            final Move bestMove = alphaBeta.execute(Table.get().getGameBoard());
 
             return bestMove;
         }

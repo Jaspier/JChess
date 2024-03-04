@@ -11,7 +11,7 @@ public class MiniMax implements MoveStrategy {
     private long boardsEvaluated;
 
     public MiniMax(final int searchDepth) {
-        this.boardEvaluator = new StandardBoardEvaluator();
+        this.boardEvaluator = StandardBoardEvaluator.get();
         this.searchDepth = searchDepth;
         this.boardsEvaluated = 0;
     }

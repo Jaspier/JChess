@@ -1,6 +1,8 @@
 package com.chess.engine.board;
 
 import java.util.*;
+import com.chess.engine.board.Move.MoveFactory;
+import com.chess.engine.pieces.Piece;
 
 public enum  BoardUtils {
     INSTANCE;
@@ -77,5 +79,37 @@ public enum  BoardUtils {
 
     public String getPositionAtCoordinate(final int coordinate) {
         return ALGEBRAIC_NOTATION.get(coordinate);
+    }
+
+    public static boolean kingThreat(final Move move) {
+        final Board board = move.getBoard();
+        final MoveTransition transition = board.currentPlayer().makeMove(move);
+        return transition.getToBoard().currentPlayer().isInCheck();
+    }
+
+    public static int evaluateCaptureMove(final Move move) {
+        final Piece movingPiece = move.getMovedPiece();
+        if(move.isAttack()) {
+            final Piece attackedPiece = move.getAttackedPiece();
+            return (attackedPiece.getPieceValue() - movingPiece.getPieceValue() +  Piece.PieceType.KING.getPieceValue()) * 100;
+        }
+        return Piece.PieceType.KING.getPieceValue() - movingPiece.getPieceValue();
+    }
+
+    public static List<Move> lastNMoves(final Board board, int N) {
+        final List<Move> moveHistory = new ArrayList<>();
+        Move currentMove = board.getTransitionMove();
+        int i = 0;
+        while(!Objects.equals(currentMove, MoveFactory.getNullMove()) && i < N) {
+            moveHistory.add(currentMove);
+            currentMove = currentMove.getBoard().getTransitionMove();
+            i++;
+        }
+        return Collections.unmodifiableList(moveHistory);
+    }
+
+    public static boolean isEndGame(final Board board) {
+        return board.currentPlayer().isInCheckMate() ||
+                board.currentPlayer().isInStaleMate();
     }
 }
