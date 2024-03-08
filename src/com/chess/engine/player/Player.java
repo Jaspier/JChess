@@ -118,4 +118,9 @@ public abstract class Player {
     public abstract Alliance getAlliance();
     public abstract Player getOpponent();
     public abstract Collection<Move> calculateKingCastles(Collection<Move> playerLegals, Collection<Move> opponentsLegals);
+
+    @Override
+    public String toString() {
+        return this.getAlliance().toString();
+    }
 }

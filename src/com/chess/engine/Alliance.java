@@ -76,4 +76,17 @@ public enum Alliance {
     public abstract boolean isPawnPromotionSquare(int position);
 
     public abstract Player choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer);
+
+    @Override
+    public String toString() {
+        if (this.isBlack()) {
+            return "Black";
+        }
+        else if (this.isWhite()) {
+            return "White";
+        }
+        else {
+            throw new RuntimeException("Not Possible...");
+        }
+    }
 }

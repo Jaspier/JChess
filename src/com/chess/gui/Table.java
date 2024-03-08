@@ -387,6 +387,18 @@ public class Table extends Observable {
                             }
 
                             boardPanel.drawBoard(chessBoard);
+
+                            if (Table.get().getGameBoard().currentPlayer().isInCheckMate()) {
+                                JOptionPane.showMessageDialog(Table.get().getBoardPanel(),
+                                        "Game Over: Player " + Table.get().getGameBoard().currentPlayer() + " is in checkmate!", "Game Over",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
+
+                            if (Table.get().getGameBoard().currentPlayer().isInStaleMate()) {
+                                JOptionPane.showMessageDialog(Table.get().getBoardPanel(),
+                                        "Game Over: Player " + Table.get().getGameBoard().currentPlayer() + " is in stalemate!", "Game Over",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
                         });
                     }
                 }
