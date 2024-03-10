@@ -43,13 +43,21 @@ public class Queen extends Piece {
                 if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                     final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                     if (!candidateDestinationTile.isTileOccupied()) {
-                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                        final Move legalMove = new MajorMove(board, this, candidateDestinationCoordinate);
+                        if (board.currentPlayer() != null && board.currentPlayer().isInCheck() && BoardUtils.kingThreat(legalMove)) {
+                            continue;
+                        }
+                        legalMoves.add(legalMove);
                     } else {
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
 
                         if (this.pieceAlliance != pieceAlliance) {
-                            legalMoves.add(new MajorAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
+                            final Move legalAttackMove = new MajorAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination);
+                            if (board.currentPlayer() != null && board.currentPlayer().isInCheck() && BoardUtils.kingThreat(legalAttackMove)) {
+                                continue;
+                            }
+                            legalMoves.add(legalAttackMove);
                         }
                         break;
                     }
