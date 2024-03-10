@@ -33,6 +33,7 @@ import static javax.swing.SwingUtilities.isRightMouseButton;
 public class Table extends Observable {
     private final GameHistoryPanel gameHistoryPanel;
     private final TakenPiecesPanel takenPiecesPanel;
+    private final DebugPanel debugPanel;
     private final BoardPanel boardPanel;
     private final MoveLog moveLog;
     private final GameSetup gameSetup;
@@ -67,6 +68,7 @@ public class Table extends Observable {
         this.chessBoard = Board.createStandardBoard();
         this.gameHistoryPanel = new GameHistoryPanel();
         this.takenPiecesPanel = new TakenPiecesPanel();
+        this.debugPanel = new DebugPanel();
         this.boardPanel = new BoardPanel();
         this.moveLog = new MoveLog();
         this.addObserver(new TableGameAIWatcher());
@@ -76,6 +78,7 @@ public class Table extends Observable {
         gameFrame.add(this.takenPiecesPanel, BorderLayout.WEST);
         gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
+        gameFrame.add(debugPanel, BorderLayout.SOUTH);
         gameFrame.setVisible(true);
 
     }
@@ -89,6 +92,7 @@ public class Table extends Observable {
         Table.get().getGameHistoryPanel().redo(chessBoard, Table.get().getMoveLog());
         Table.get().getTakenPiecesPanel().redo(Table.get().getMoveLog());
         Table.get().getBoardPanel().drawBoard(Table.get().getGameBoard());
+        Table.get().getDebugPanel().redo();
     }
 
     private GameSetup getGameSetup() {
@@ -208,6 +212,10 @@ public class Table extends Observable {
         return this.takenPiecesPanel;
     }
 
+    private DebugPanel getDebugPanel() {
+        return this.debugPanel;
+    }
+
     private BoardPanel getBoardPanel() {
         return this.boardPanel;
     }
@@ -223,7 +231,8 @@ public class Table extends Observable {
 
         @Override
         public Move doInBackground() throws Exception {
-            final MoveStrategy alphaBeta = new AlphaBeta(4);
+            final AlphaBeta alphaBeta = new AlphaBeta(4);
+            alphaBeta.addObserver(Table.get().getDebugPanel());
             final Move bestMove = alphaBeta.execute(Table.get().getGameBoard());
 
             return bestMove;
@@ -240,6 +249,7 @@ public class Table extends Observable {
                 Table.get().getGameHistoryPanel().redo(Table.get().getGameBoard(), Table.get().getMoveLog());
                 Table.get().getTakenPiecesPanel().redo(Table.get().getMoveLog());
                 Table.get().getBoardPanel().drawBoard(Table.get().getGameBoard());
+                Table.get().getDebugPanel().redo();
                 Table.get().moveMadeUpdate(PlayerType.COMPUTER);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -387,6 +397,7 @@ public class Table extends Observable {
                             }
 
                             boardPanel.drawBoard(chessBoard);
+                            debugPanel.redo();
 
                             if (Table.get().getGameBoard().currentPlayer().isInCheckMate()) {
                                 JOptionPane.showMessageDialog(Table.get().getBoardPanel(),
