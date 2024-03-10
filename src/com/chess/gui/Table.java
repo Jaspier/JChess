@@ -231,7 +231,7 @@ public class Table extends Observable {
 
         @Override
         public Move doInBackground() throws Exception {
-            final AlphaBeta alphaBeta = new AlphaBeta(4);
+            final AlphaBeta alphaBeta = new AlphaBeta(Table.get().getGameSetup().getSearchDepth());
             alphaBeta.addObserver(Table.get().getDebugPanel());
             final Move bestMove = alphaBeta.execute(Table.get().getGameBoard());
 
