@@ -11,5 +11,6 @@ but is more for learning and reinforcing good coding practice.
 ## Preview of the Game GUI
 Built using Java Swing.
 
-<img width="601" alt="image" src="https://github.com/Jaspier/JChess/assets/57241026/6093726a-1f70-4ada-83b7-79850c065518">
+<img width="600" alt="image" src="https://github.com/Jaspier/JChess/assets/57241026/68981984-d522-4dc2-8f40-45b417fef7ae">
+
 
