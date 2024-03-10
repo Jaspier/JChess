@@ -358,6 +358,7 @@ public class Table extends Observable {
             setPreferredSize(TILE_PANEL_DIMENSION);
             assignTileColour();
             assignTilePieceIcon(chessBoard);
+            highlightTileBorder(chessBoard);
 
             addMouseListener(new MouseListener() {
                 @Override
@@ -441,9 +442,31 @@ public class Table extends Observable {
         public void drawTile(final Board board) {
             assignTileColour();
             assignTilePieceIcon(board);
+            highlightTileBorder(board);
             highlightLegals(board);
+            highlightAIMove();
             validate();
             repaint();
+        }
+
+        private void highlightTileBorder(final Board board) {
+            if(humanMovedPiece != null &&
+                    humanMovedPiece.getPieceAlliance() == board.currentPlayer().getAlliance() &&
+                    humanMovedPiece.getPiecePosition() == this.tileId) {
+                setBorder(BorderFactory.createLineBorder(Color.cyan));
+            } else {
+                setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            }
+        }
+
+        private void highlightAIMove() {
+            if(computerMove != null) {
+                if(this.tileId == computerMove.getCurrentCoordinate()) {
+                    setBackground(Color.pink);
+                } else if(this.tileId == computerMove.getDestinationCoordinate()) {
+                    setBackground(Color.red);
+                }
+            }
         }
 
         private void assignTilePieceIcon(final Board board) {
