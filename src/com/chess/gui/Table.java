@@ -144,10 +144,19 @@ public class Table extends Observable {
 
     private JMenu createOptionsMenu() {
         final JMenu optionsMenu = new JMenu("Options");
+        optionsMenu.setMnemonic(KeyEvent.VK_O);
 
-        final JMenuItem resetMenuItem = new JMenuItem("New Game", KeyEvent.VK_P);
+        final JMenuItem resetMenuItem = new JMenuItem("New Game", KeyEvent.VK_N);
         resetMenuItem.addActionListener(e -> undoAllMoves());
         optionsMenu.add(resetMenuItem);
+
+        final JMenuItem undoMoveMenuItem = new JMenuItem("Undo last move", KeyEvent.VK_U);
+        undoMoveMenuItem.addActionListener(e -> {
+            if(Table.get().getMoveLog().size() > 0) {
+                undoLastMove();
+            }
+        });
+        optionsMenu.add(undoMoveMenuItem);
 
         final JMenuItem setupGameMenuItem = new JMenuItem("Setup Game");
         setupGameMenuItem.addActionListener(new ActionListener() {
@@ -233,6 +242,18 @@ public class Table extends Observable {
     private BoardPanel getBoardPanel() {
         return this.boardPanel;
     }
+
+    private void undoLastMove() {
+        final Move lastMove = Table.get().getMoveLog().removeMove(Table.get().getMoveLog().size() - 1);
+        this.chessBoard = this.chessBoard.currentPlayer().unMakeMove(lastMove).getToBoard();
+        this.computerMove = null;
+        Table.get().getMoveLog().removeMove(lastMove);
+        Table.get().getGameHistoryPanel().redo(chessBoard, Table.get().getMoveLog());
+        Table.get().getTakenPiecesPanel().redo(Table.get().getMoveLog());
+        Table.get().getBoardPanel().drawBoard(chessBoard);
+        Table.get().getDebugPanel().redo();
+    }
+
 
     private void moveMadeUpdate(final PlayerType playerType) {
         setChanged();
