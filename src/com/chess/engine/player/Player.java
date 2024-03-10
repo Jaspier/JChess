@@ -114,6 +114,10 @@ public abstract class Player {
         return new MoveTransition(this.board, transitionBoard, move, MoveStatus.DONE);
     }
 
+    public MoveTransition unMakeMove(final Move move) {
+        return new MoveTransition(this.board, move.undo(), move, MoveStatus.DONE);
+    }
+
     public abstract Collection<Piece> getActivePieces();
     public abstract Alliance getAlliance();
     public abstract Player getOpponent();

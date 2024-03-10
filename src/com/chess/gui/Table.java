@@ -16,10 +16,7 @@ import com.google.common.collect.Lists;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -148,6 +145,10 @@ public class Table extends Observable {
     private JMenu createOptionsMenu() {
         final JMenu optionsMenu = new JMenu("Options");
 
+        final JMenuItem resetMenuItem = new JMenuItem("New Game", KeyEvent.VK_P);
+        resetMenuItem.addActionListener(e -> undoAllMoves());
+        optionsMenu.add(resetMenuItem);
+
         final JMenuItem setupGameMenuItem = new JMenuItem("Setup Game");
         setupGameMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -198,6 +199,19 @@ public class Table extends Observable {
 
     public void updateComputerMove(final Move move) {
         this.computerMove = move;
+    }
+
+    private void undoAllMoves() {
+        for(int i = Table.get().getMoveLog().size() - 1; i >= 0; i--) {
+            final Move lastMove = Table.get().getMoveLog().removeMove(Table.get().getMoveLog().size() - 1);
+            this.chessBoard = this.chessBoard.currentPlayer().unMakeMove(lastMove).getToBoard();
+        }
+        this.computerMove = null;
+        Table.get().getMoveLog().clear();
+        Table.get().getGameHistoryPanel().redo(chessBoard, Table.get().getMoveLog());
+        Table.get().getTakenPiecesPanel().redo(Table.get().getMoveLog());
+        Table.get().getBoardPanel().drawBoard(chessBoard);
+        Table.get().getDebugPanel().redo();
     }
 
     private MoveLog getMoveLog() {

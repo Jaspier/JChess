@@ -103,6 +103,13 @@ public abstract class Move {
         return builder.build();
     }
 
+    public Board undo() {
+        final Board.Builder builder = new Builder();
+        this.board.getAllPieces().forEach(builder::setPiece);
+        builder.setMoveMaker(this.board.currentPlayer().getAlliance());
+        return builder.build();
+    }
+
     String disambiguationFile() {
         for(final Move move : this.board.currentPlayer().getLegalMoves()) {
             if(move.getDestinationCoordinate() == this.destinationCoordinate && !this.equals(move) &&
@@ -246,6 +253,15 @@ public abstract class Move {
             }
             builder.setPiece(this.movedPiece.movePiece(this));
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
+            return builder.build();
+        }
+
+        @Override
+        public Board undo() {
+            final Board.Builder builder = new Builder();
+            this.board.getAllPieces().forEach(builder::setPiece);
+            builder.setEnPassantPawn((Pawn)this.getAttackedPiece());
+            builder.setMoveMaker(this.board.currentPlayer().getAlliance());
             return builder.build();
         }
     }
